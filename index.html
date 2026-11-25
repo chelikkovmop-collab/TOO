@@ -77,7 +77,12 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid #fff;
 .track{height:46px;border-radius:12px;background:#e6e1d6;display:flex;overflow:hidden}
 .seg{height:100%;display:flex;align-items:center;padding-left:12px;font:700 13px Mono,monospace;white-space:nowrap;overflow:hidden;width:0;transition:width 1s cubic-bezier(.2,.8,.2,1)}
 .seg.dev{background:#9aa0b3;color:#14161f}.seg.flt{background:#c9cdd8;color:#14161f}
-.seg.too{background:var(--bg);color:#fff}
+.seg.too{background:var(--bg);color:#fff}.seg.tflt{background:#7f97ec;color:#fff}
+.row-h .sub{font:700 13px Mono,monospace;color:#5a5e6b;margin-left:6px}
+.hz{display:inline-flex;gap:4px;padding:4px;border-radius:99px;background:#e6e1d6;margin-bottom:22px}
+.hz button{min-height:40px;padding:0 18px;border:0;border-radius:99px;background:transparent;color:#14161f;font:700 15px Grotesk,sans-serif;cursor:pointer}
+.hz button[aria-checked=true]{background:#14161f;color:#fff}
+.year button:focus-visible{outline-color:var(--bg)}
 .verdict{margin-top:18px;font-size:20px;font-weight:700}.verdict b{color:var(--acc)}
 .spec{width:100%;border-collapse:collapse;font-size:16px}
 .spec th,.spec td{padding:12px 8px;border-bottom:1px solid #d8d3c7;text-align:left;vertical-align:top}
@@ -94,6 +99,9 @@ input{width:100%;min-height:54px;border-radius:14px;border:2px solid var(--line)
 input::placeholder{color:rgba(255,255,255,.45)}
 .err{color:#ffb199;font-size:14px;min-height:1.2em;margin:0}
 .ok{display:none;padding:22px;border-radius:18px;background:rgba(255,255,255,.1);font-size:18px}
+.ok pre{margin:14px 0 0;padding:14px;border-radius:12px;background:rgba(0,0,0,.25);font:14px/1.5 Mono,monospace;white-space:pre-wrap}
+.ok .btn{margin-top:16px}
+.form-note{margin:0;font-size:14px;color:var(--soft)}
 footer{padding:26px max(5vw,16px);background:var(--deep);border-top:1px solid var(--line);color:var(--soft);font-size:14px}
 footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
 
@@ -182,27 +190,33 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
 
 <section class="band year" id="year">
   <div class="wrap">
-    <h2>Аналог дешевле на 30%? Посчитайте за год.</h2>
-    <p class="lead">Дешёвые очистители берут своё на фильтрах: их меняют каждые 3 месяца. У Тоо фильтр работает год, и первый уже внутри.</p>
+    <h2>Аналог дешевле на 30%? Посчитайте на пару лет вперёд.</h2>
+    <p class="lead">Дешёвые очистители берут своё на фильтрах: фильтр за 1 200 сом меняют каждые 3 месяца. У Тоо фильтр за 1 500 сом работает целый год. Первый фильтр у обоих уже в комплекте.</p>
     <div class="cmp">
       <div>
+        <div class="hz" role="radiogroup" aria-label="Срок расчёта">
+          <button type="button" role="radio" data-years="1" aria-checked="false">1 год</button>
+          <button type="button" role="radio" data-years="2" aria-checked="true">2 года</button>
+          <button type="button" role="radio" data-years="3" aria-checked="false">3 года</button>
+        </div>
         <div class="rows">
           <div>
-            <div class="row-h"><span>Аналог</span><span>13 800 сом</span></div>
-            <div class="track"><div class="seg dev" data-w="65.2">9 000 устройство</div><div class="seg flt" data-w="34.8">4 фильтра · 4 800</div></div>
+            <div class="row-h"><span>Аналог</span><span id="anaTotal">17 400 сом</span></div>
+            <div class="track"><div class="seg dev" id="anaDev" data-w="51.7">9 000 устройство</div><div class="seg flt" id="anaFlt" data-w="48.3">7 фильтров · 8 400</div></div>
           </div>
           <div>
-            <div class="row-h"><span>Тоо</span><span>12 900 сом</span></div>
-            <div class="track"><div class="seg too" data-w="93.5">12 900 · фильтр на год внутри</div></div>
+            <div class="row-h"><span>Тоо <small class="sub" id="tooSub">+ 1 фильтр · 1 500</small></span><span id="tooTotal">14 400 сом</span></div>
+            <div class="track"><div class="seg too" id="tooDev" data-w="74.1">12 900 устройство</div><div class="seg tflt" id="tooFlt" data-w="8.6">1 фильтр · 1 500</div></div>
           </div>
         </div>
-        <p class="verdict">Через год Тоо выходит <b>на 900 сом дешевле</b> — и это ещё лампа и колонка.</p>
+        <p class="verdict" id="verdict" aria-live="polite">За 2 года Тоо выходит <b>на 3 000 сом дешевле</b> — и это ещё лампа и колонка.</p>
       </div>
       <table class="spec">
         <thead><tr><th></th><th>Аналог</th><th>Тоо</th></tr></thead>
         <tbody>
           <tr><td>Фильтр</td><td>H11</td><td>HEPA 13</td></tr>
           <tr><td>Замена фильтра</td><td>раз в 3 мес.</td><td>раз в год</td></tr>
+          <tr><td>Сменный фильтр</td><td>1 200 сом</td><td>1 500 сом</td></tr>
           <tr><td>Лампа и колонка</td><td>нет</td><td>есть</td></tr>
           <tr><td>Гарантия</td><td>6 мес.</td><td>2 года</td></tr>
         </tbody>
@@ -217,7 +231,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
     <div>
       <h2>Привезём завтра</h2>
       <p class="lead">Доставка по Бишкеку бесплатно. Оплата при получении, 14 дней на возврат.</p>
-      <div class="price"><strong>12 900 сом</strong><span>Фильтр на первый год уже в комплекте</span></div>
+      <div class="price"><strong>12 900 сом</strong><span>Фильтр на первый год уже в комплекте.<br>Дальше — сменный фильтр за 1 500 сом раз в год.</span></div>
     </div>
     <div>
       <form id="form" novalidate>
@@ -227,6 +241,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
         <input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+996 700 123 456">
         <p class="err" id="err" role="alert"></p>
         <button class="btn main" type="submit">Заказать Тоо</button>
+        <p class="form-note">Откроется WhatsApp с готовым сообщением — останется нажать «Отправить».</p>
       </form>
       <div class="ok" id="ok" role="status"></div>
     </div>
@@ -238,6 +253,12 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
 
 <script>
 {
+  // ---------- настройки магазина: цены и номер для заказов ----------
+  const SHOP={
+    whatsapp:'',                                   // номер продавца, например '996700123456'; пусто = демо-режим
+    too:{price:12900,filter:1500,every:12},        // every = замена фильтра раз в N месяцев
+    analog:{price:9000,filter:1200,every:3}
+  };
   const MODES={
     air:{glow:'170,205,255',stat:'<strong>99,9%</strong><span>смога и пыли<br>уходит</span>',note:'HEPA 13 очищает комнату до 30 м² за 15 минут.'},
     lamp:{glow:'255,200,140',stat:'<strong>2700 K</strong><span>тёплый свет<br>для вечера</span>',note:'Тёплый свет внутри кольца, пока Тоо чистит воздух.'},
@@ -262,9 +283,48 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
   });
   setMode('air');
 
+  // ---------- расчёт: сколько стоит владеть очистителем 1, 2 или 3 года ----------
+  // первый фильтр у обоих уже в комплекте, поэтому докупаем на один меньше
+  const $=id=>document.getElementById(id);
+  const fmt=n=>n.toLocaleString('ru-RU');
+  const plural=(n,one,few,many)=>{const a=n%10,b=n%100;return a===1&&b!==11?one:a>=2&&a<=4&&(b<12||b>14)?few:many};
+  const cost=(p,y)=>{const f=Math.max(0,Math.round(12/p.every)*y-1);return{f,dev:p.price,flt:f*p.filter,total:p.price+f*p.filter}};
+  const hzBtns=[...document.querySelectorAll('.hz button')];
+  let years=2,shown=false;
+  function setSeg(el,part,max,label){
+    const w=max?part/max*100:0;
+    el.dataset.w=w.toFixed(1);
+    el.textContent=w>=16?label:'';
+    el.title=label;
+    if(shown)el.style.width=w+'%';
+  }
+  function renderYear(){
+    const a=cost(SHOP.analog,years),t=cost(SHOP.too,years),max=Math.max(a.total,t.total);
+    $('anaTotal').textContent=fmt(a.total)+' сом';
+    $('tooTotal').textContent=fmt(t.total)+' сом';
+    setSeg($('anaDev'),a.dev,max,fmt(a.dev)+' устройство');
+    setSeg($('anaFlt'),a.flt,max,a.f+' '+plural(a.f,'фильтр','фильтра','фильтров')+' · '+fmt(a.flt));
+    setSeg($('tooDev'),t.dev,max,fmt(t.dev)+' устройство');
+    setSeg($('tooFlt'),t.flt,max,t.f+' '+plural(t.f,'фильтр','фильтра','фильтров')+' · '+fmt(t.flt));
+    $('tooSub').textContent=t.f?'+ '+$('tooFlt').title:'фильтр в комплекте';
+    const diff=a.total-t.total,span=years+' '+plural(years,'год','года','лет');
+    $('verdict').innerHTML=diff>0
+      ?'За '+span+' Тоо выходит <b>на '+fmt(diff)+' сом дешевле</b> — и это ещё лампа и колонка.'
+      :'За первый год Тоо дороже всего на '+fmt(-diff)+' сом. Дальше аналог проедает разницу на фильтрах: <b>за 2 года Тоо уже на '+fmt(cost(SHOP.analog,2).total-cost(SHOP.too,2).total)+' сом дешевле</b>.';
+    hzBtns.forEach(b=>b.setAttribute('aria-checked',+b.dataset.years===years));
+  }
+  hzBtns.forEach((b,i)=>{
+    b.addEventListener('click',()=>{years=+b.dataset.years;renderYear()});
+    b.addEventListener('keydown',e=>{
+      if(e.key!=='ArrowRight'&&e.key!=='ArrowLeft')return;
+      const n=hzBtns[(i+(e.key==='ArrowRight'?1:hzBtns.length-1))%hzBtns.length];n.focus();n.click();
+    });
+  });
+  renderYear();
+
   // полосы расчёта растут, когда блок появляется на экране
   const segs=document.querySelectorAll('.seg');
-  const grow=()=>segs.forEach(s=>s.style.width=s.dataset.w+'%');
+  const grow=()=>{shown=true;segs.forEach(s=>s.style.width=s.dataset.w+'%')};
   if('IntersectionObserver' in window){
     const yearObs=new IntersectionObserver(es=>{if(es.some(e=>e.isIntersecting)){grow();yearObs.disconnect()}},{threshold:.3});
     yearObs.observe(document.getElementById('year'));
@@ -282,8 +342,19 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
     if(!name){err.textContent='Напишите, как к вам обращаться';form.name.focus();return}
     if(phone.replace(/\D/g,'').length<9){err.textContent='Проверьте номер: нужно минимум 9 цифр';form.phone.focus();return}
     err.textContent='';
-    form.style.display='none';ok.style.display='block';
-    ok.textContent='Спасибо, '+name+'! Это учебный сайт, поэтому заказ никуда не отправился — но кнопка работает.';
+    const msg='Здравствуйте! Хочу заказать Тоо за '+fmt(SHOP.too.price)+' сом с доставкой по Бишкеку.\nИмя: '+name+'\nТелефон: '+phone;
+    const num=SHOP.whatsapp.replace(/\D/g,'');
+    const url=num?'https://wa.me/'+num+'?text='+encodeURIComponent(msg):'';
+    if(url)window.open(url,'_blank','noopener');
+    // показываем итог через textContent, чтобы имя из формы не попало в разметку
+    form.style.display='none';ok.style.display='block';ok.replaceChildren();
+    const p=document.createElement('p');p.style.margin='0';
+    p.textContent=url
+      ?'Спасибо, '+name+'! Мы открыли WhatsApp с вашим заказом — нажмите «Отправить», и мы перезвоним.'
+      :'Спасибо, '+name+'! Это демо-режим: номер магазина ещё не указан, поэтому вот сообщение, которое ушло бы в WhatsApp.';
+    const pre=document.createElement('pre');pre.textContent=msg;
+    ok.append(p,pre);
+    if(url){const a=document.createElement('a');a.className='btn main';a.href=url;a.target='_blank';a.rel='noopener';a.textContent='Открыть WhatsApp ещё раз';ok.append(a)}
   });
 }
 </script>
